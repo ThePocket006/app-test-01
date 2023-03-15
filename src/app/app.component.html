@@ -1,0 +1,21 @@
+<!-- your navs bound to current route fragments -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">{{ title }}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul ngbNav [activeId]="route.fragment | async" class="navbar-nav">
+        <li [ngbNavItem]="link.fragment" *ngFor="let link of links">
+          <a ngbNavLink routerLink="/" [fragment]="link.fragment">{{ link.title }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- and an actual outlet elsewhere -->
+<div class="container mb-2">
+  <router-outlet></router-outlet>
+</div>

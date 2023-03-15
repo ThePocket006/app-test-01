@@ -1,0 +1,170 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-6 col-md-8 container-fluid">
+            <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
+                <ng-wizard-step [title]="'Step 1'" [description]="'Abonnement'" [canExit]="stepValidator.bind(this)">
+                    <div class="container-fluid mb-3 col-6 col-lg-12">
+                        <form [formGroup]="stepForm.step1">
+                            <div class="mb-3">
+                                <label for="form_time">Durée (en moi)</label>
+                                <select formControlName="time" [ngClass]="{'form-control': true, 'is-invalid':
+                  errors?.time?.test}" [(ngModel)]="data.time" required>
+                                    <option *ngFor="let item of configData.times" [value]="item">{{
+                                        item }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="form_amount">Quantité de Gigabites</label>
+                                <select formControlName="amount" [ngClass]="{'form-control': true, 'is-invalid':
+                  errors?.amount?.test}" [(ngModel)]="data.amount" required>
+                                    <option *ngFor="let item of configData.amounts" [value]="item">{{ item }}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input formControlName="upform" class="" [ngClass]="{'form-check-input': true, 'is-invalid':
+                  errors?.upform?.test}" type="checkbox" [(ngModel)]="data.upform" id="form_upform">
+                                <label class="form-check-label" for="form_upform">
+                                    Paiement anticipé
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </ng-wizard-step>
+
+                <ng-wizard-step [title]="'Step 2'" [description]="'Paiement'" [canExit]="stepValidator.bind(this)">
+                    <div class="container-fluid mb-3 col-6 col-lg-12">
+                        <form [formGroup]="stepForm.step2">
+                            <div class="mb-3">
+                                <label for="form-card-number">Numero de carte de crédit</label>
+                                <input formControlName="card_number" type="text" [ngClass]="{'form-control': true, 'is-invalid':
+                  errors?.card_number?.test}" [(ngModel)]="data.card.number">
+                                <div *ngIf="errors?.card_number?.test" class="invalid-feedback">
+                                    {{ getError(errors.card_number.errors) }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="form-card-date" class="">Date d'expiration de la
+                                    carte</label>
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-6">
+                                        <label for="form-card-epx-month" class="col-form-label">Moi</label>
+                                        <input formControlName="card_exp_month" type="text" [ngClass]="{'form-control': true, 'is-invalid':
+                      errors?.card_exp_month?.test}" placeholder="01" [(ngModel)]="data.card.exp_month">
+                                        <div *ngIf="errors?.card_exp_month?.test" class="invalid-feedback">
+                                            {{ getError(errors.card_exp_month.errors) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <label for="form-card-epx-year" class="col-form-label">Année</label>
+                                        <input formControlName="card_exp_year" type="text" [ngClass]="{'form-control': true, 'is-invalid':
+                      errors?.card_exp_year?.test}" placeholder="2023" [(ngModel)]="data.card.exp_year">
+                                        <div *ngIf="errors?.card_exp_year?.test" class="invalid-feedback">
+                                            {{ getError(errors.card_exp_year.errors) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="form-card-number" class="">Code de securite de la
+                                    carte</label>
+                                <input formControlName="card_cvc" type="text" [ngClass]="{'form-control': true, 'is-invalid':
+                  errors?.card_cvc?.test}" [(ngModel)]="data.card.cvc">
+                                <div *ngIf="errors?.card_cvc?.test" class="invalid-feedback">
+                                    {{ getError(errors.card_cvc.errors) }}
+                                </div>
+                            </div>
+                            <button id="step-2-submit" type="submit" class="d-none"></button>
+                        </form>
+                    </div>
+                </ng-wizard-step>
+
+                <ng-wizard-step [title]="'Step 3'" [description]="'Confirmation'" [canExit]="stepValidator.bind(this)">
+                    <div class="container-fluid mb-3 col-6 col-lg-12">
+                        <div class="mb-3">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-12">
+                                    <table class="table">
+                                        <tr>
+                                            <th>Durée</th>
+                                            <td>{{ data.time }} mois</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Quantité de Gigabites</th>
+                                            <td>{{ data.amount }} Gb</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Paiement anticipé</th>
+                                            <td>{{ (data.upform) ? "Oui" : "Non" }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Numero de carte de crédit</th>
+                                            <td>{{ data.card.number }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Date d'expiration de la carte</th>
+                                            <td>{{ data.card.exp_month }} / {{ data.card.exp_year }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Code de securite de la carte</th>
+                                            <td>{{ data.card.cvc }}</td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <th colspan="2">Detail sur l'abonnement</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Nombre de mois</th>
+                                            <td>{{ data.time }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Prix</th>
+                                            <td>{{ data.getSubPlan().price_usd_per_gb }} USD / Moi</td>
+                                        </tr>
+                                        <tr *ngIf="data.upform">
+                                            <th>Reduction</th>
+                                            <td>
+                                                {{ data.getReductionAmount() }} USD <span class="text-muted small">(10% de {{
+                          data.getTotalBaseAmount() }} USD)</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="">
+                                            <th>Total à payer</th>
+                                            <td class="medium">{{ data.getTotalAmount() }} USD</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form [formGroup]="stepForm.step3">
+                            <div class="mb-3">
+                                <label for="form-card-number" class="">Votre E-mail</label>
+                                <input formControlName="email" type="email" [ngClass]="{'form-control': true, 'is-invalid':
+                  errors?.email?.test}" [(ngModel)]="data.email" id="form-card-number" required>
+                                <div *ngIf="errors?.email?.test" class="invalid-feedback">
+                                    {{ getError(errors.email.errors) }}
+                                </div>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input formControlName="consent" [ngClass]="{'form-check-input': true, 'is-invalid':
+                  errors?.consent?.test}" type="checkbox" [(ngModel)]="data.consent" id="form-consent" required>
+                                <label class="form-check-label" for="form-consent">
+                                    Accepter les conditions générales
+                                </label>
+                                <div *ngIf="errors?.consent?.test" class="invalid-feedback">
+                                    {{ getError(errors.consent.errors) }}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </ng-wizard-step>
+            </ng-wizard>
+        </div>
+    </div>
+</div>
