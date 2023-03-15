@@ -59,12 +59,15 @@ export class AppStarterComponent implements OnInit {
     private ngWizardService: NgWizardService,
     private route: ActivatedRoute
     ) {
+      /**NOTE - Initialisation du model */
       this.data = new VO();
 
+      /**NOTE - recuperation des donnees */
       this.data.setPlans(<IData>this.route.snapshot.data['data'])
 
       this.errors = {};
 
+      /**NOTE - Creation des controls pour chaque etape */
       this.stepForm = {
         step1: new FormGroup({
           time: new FormControl(this.data.time, [
@@ -139,6 +142,8 @@ export class AppStarterComponent implements OnInit {
     });
 
     //console.log('onSubmit', args);
+
+    /**NOTE - On vérifie que toute les etapes sont valide avant d'effectuer la sauvegarde */
     if(this.stepValidator(args)){
       let timerInterval:any;
       Swal.fire({
@@ -169,6 +174,7 @@ export class AppStarterComponent implements OnInit {
     }
   }
 
+  /**NOTE - function de validation des etapes */
   stepValidator(args: StepValidationArgs){
     //console.log('stepValidator', args);
     const fg = ((0 === args.fromStep.index) ? this.stepForm.step1 : ((1 === args.fromStep.index)? this.stepForm.step2 : this.stepForm.step3));
@@ -193,10 +199,12 @@ export class AppStarterComponent implements OnInit {
     return fg.valid;
   }
 
+  /**NOTE - just for test */
   getCurrentModel() { 
     return JSON.stringify(this.data); 
   }
 
+  /**NOTE - recuperer l'erreur de validation du Form Control */
   getError(errors: ValidationErrors):string {
     //console.log('ERRORS::errors', errors)
     switch (true) {
@@ -231,7 +239,6 @@ export class AppStarterComponent implements OnInit {
  
   stepChanged(args: StepChangedArgs) {
     //console.log(args.step);
-
   }
  
   isValidTypeBoolean: boolean = true;

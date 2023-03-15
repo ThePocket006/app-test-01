@@ -14,6 +14,7 @@ export class ApiServiceService {
     private http: HttpClient
   ) { }
 
+  /**NOTE - requete http de recuperation des donnees de souscription */
   public getPlan() {
     return this.http.get<IData>('/assets/data.json');
   }
